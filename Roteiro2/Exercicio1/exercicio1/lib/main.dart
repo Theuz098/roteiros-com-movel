@@ -1,44 +1,46 @@
-// Importa a biblioteca principal de componentes visuais do Flutter (Material Design)
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: TelaInicial());
+    return const MaterialApp(home: PaginaHome());
   }
 }
 
-class TelaInicial extends StatefulWidget {
-  const TelaInicial({super.key});
+class PaginaHome extends StatefulWidget {
+  const PaginaHome({super.key});
+
   @override
-  State<TelaInicial> createState() => _TelaInicialState();
+  State<PaginaHome> createState() => _PaginaHomeState();
 }
 
-class _TelaInicialState extends State<TelaInicial> {
-  String mensagem = "Você está na Tela Inicial";
+class _PaginaHomeState extends State<PaginaHome> {
+  String texto = "Você está na Página Home";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tela Inicial")),
+      appBar: AppBar(title: const Text("Home")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(mensagem, style: const TextStyle(fontSize: 18)),
+            Text(texto, style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 20),
             ElevatedButton(
-              child: const Text("Ir para detalhe"),
-              onPressed: () async {
+              onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TelaDetalhe()),
+                  MaterialPageRoute(builder: (_) => const PaginaInfo()),
                 );
               },
+              child: const Text("Ver detalhes"),
             ),
           ],
         ),
@@ -47,26 +49,25 @@ class _TelaInicialState extends State<TelaInicial> {
   }
 }
 
-class TelaDetalhe extends StatelessWidget {
-  const TelaDetalhe({super.key});
+class PaginaInfo extends StatelessWidget {
+  const PaginaInfo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tela Detalhe")),
+      appBar: AppBar(title: const Text("Informações")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Você esta na Tela Detalhe",
-              style: const TextStyle(fontSize: 18),
+            const Text(
+              "Você está na Página de Informações",
+              style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              child: const Text("Voltar"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Retornar"),
             ),
           ],
         ),
