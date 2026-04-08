@@ -1,38 +1,32 @@
-# Perguntas para Discussão: Flutter & Dart
+# Perguntas sobre Flutter e Dart
 
-## 🏗️ Estrutura e Widgets
+## Estrutura e Widgets
 
-### 1. Por que usamos construtor?
-O construtor é o ponto de entrada de um Widget. No Flutter, ele é essencial para:
-* **Passagem de Dados:** Permite que uma tela receba informações de outra (ex: IDs, objetos ou configurações).
-* **Imutabilidade:** Como a maioria dos Widgets são `final`, o construtor define os valores iniciais que não mudarão durante o ciclo de vida daquela instância.
-* **Identificação:** Passar a `Key` para que o Framework gerencie a árvore de elementos corretamente.
+ 1. Por que usamos construtor?
+O construtor serve para inicializar um Widget com os dados que ele precisa para funcionar. No Flutter, ele é útil para:
+- Receber informações de outras telas ou widgets pai
+- Definir valores que não vão mudar depois que o widget for criado
+- Passar a `Key` para o framework identificar o widget na árvore
 
 ### 2. Por que a Tela2 pode ser Stateless?
-Uma tela pode ser `StatelessWidget` se o seu estado interno **não precisa mudar** após ser construída.
-* Se a `Tela2` apenas exibe dados recebidos pelo construtor e não possui interações que alterem variáveis locais (como contadores ou campos de texto dinâmicos), ela não precisa da complexidade de um `StatefulWidget`.
-* **Performance:** Widgets Stateless são mais leves para o sistema renderizar.
+Porque ela não precisa guardar nem atualizar nenhuma variável interna. Tudo que ela faz é mostrar botões fixos e retornar um valor quando o usuário clica. Quando não há mudança de estado interno, `StatelessWidget` é suficiente e mais eficiente.
 
 ### 3. O dado pode mudar depois que a tela é criada?
-* **Em um StatelessWidget:** Não diretamente. Se o dado original mudar na "tela pai", o Flutter reconstrói a `Tela2` inteira com a nova informação, mas a instância anterior é descartada.
-* **Em um StatefulWidget:** Sim. Através do método `setState()`, você avisa ao Flutter que um dado mudou e a interface precisa ser redesenhada para refletir essa mudança.
+- **StatelessWidget**: não, o widget é imutável. Se o dado mudar na tela pai, o Flutter reconstrói o widget do zero.
+- **StatefulWidget**: sim, através do `setState()` é possível atualizar variáveis e redesenhar a interface sem destruir o widget.
 
 ---
 
-## ⏳ Assincronismo (Async, Await e Future)
+Assincronismo
 
-### 4. O que acontece se remover o await?
-O código **não esperará** a conclusão da tarefa. 
-* A execução pulará imediatamente para a próxima linha.
-* A variável que deveria receber o resultado conterá uma instância de `Future<Tipo>` em vez do valor real (como uma String ou um objeto).
+4. O que acontece se remover o `await`?
+A função não vai esperar o resultado. O código continua na próxima linha imediatamente, e o valor retornado será um `Future` em vez do dado real. Isso causa bugs porque a variável vai estar "vazia" no momento em que for usada.
 
-### 5. O que acontece se remover o async?
-O Dart retornará um erro de compilação se você tentar usar a palavra-chave `await` dentro de uma função que não esteja marcada como `async`. O `async` avisa ao compilador que aquela função sempre retornará um `Future`.
+5. O que acontece se remover o `async`?
+O Dart vai dar erro de compilação se houver `await` dentro de uma função que não está marcada como `async`. O `async` transforma a função em assíncrona e faz ela retornar um `Future` automaticamente.
 
-### 6. O que é Future?
-Um `Future` é um objeto que representa uma **operação atrasada**. É uma "promessa" de que um valor (ou um erro) chegará em algum momento. Enquanto o processo (como uma busca no banco de dados) acontece, o `Future` fica no estado "pendente".
+ 6. O que é Future?
+É um objeto que representa um valor que vai existir no futuro. É como um bilhete que diz "quando a operação terminar, você receberá o resultado aqui". Enquanto a operação não termina, o `Future` fica em estado pendente.
 
-### 7. Quando o valor realmente é recebido?
-O valor é recebido no momento em que a operação assíncrona é "completada" com sucesso.
-* No código com `await`, a linha seguinte só é executada quando o valor chega.
-* No nível do sistema, isso ocorre quando o **Event Loop** do Dart processa a resposta da tarefa assíncrona.
+7. Quando o valor realmente é recebido?
+Quando a operação assíncrona é concluída. Com `await`, a linha seguinte só executa depois que o `Future` é resolvido. Isso acontece quando o Event Loop do Dart processa a resposta da tarefa em segundo plano.
